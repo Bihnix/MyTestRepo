@@ -4,6 +4,12 @@ import yfinance as yf
 import os
 import matplotlib.pyplot as plt
 
+"""
+This script fetches historical stock prices for a list of FAANG companies (Apple, Amazon, Meta, Google, and Netflix)
+from Yahoo Finance using the yfinance library. It calculates daily, monthly, and weekly returns for each company.
+The data is then saved as CSV files and plotted as separate subplots for each company.
+"""
+
 # Define the FAANG company symbols
 symbols = ['AAPL', 'AMZN', 'meta', 'GOOGL', 'NFLX']
 
@@ -12,10 +18,31 @@ start_date = '2000-01-01'
 end_date = '2024-04-30'
 
 def getPrice(stockName,start_date, end_date):
+    """
+    Fetches historical stock prices for a given symbol from Yahoo Finance.
+
+    Parameters:
+    stockName (str): The symbol of the stock.
+    start_date (str): The start date of the historical data in 'YYYY-MM-DD' format.
+    end_date (str): The end date of the historical data in 'YYYY-MM-DD' format.
+
+    Returns:
+    pandas.DataFrame: A DataFrame containing the historical stock prices.
+    """
     data = yf.download(tickers= stockName, start=start_date, end=end_date)
     return data
 
+
 def calculate_returns(data):
+    """
+    Calculates daily, monthly, and weekly returns for a given DataFrame of stock prices.
+
+    Parameters:
+    data (pandas.DataFrame): A DataFrame containing the historical stock prices.
+
+    Returns:
+    pandas.DataFrame: The input DataFrame with additional columns for daily, monthly, and weekly returns.
+    """
     data['Daily_Return'] = data['Close'].pct_change()
     #addin montghly return
     data['Monthly_Return'] = data['Close'].pct_change(30)
